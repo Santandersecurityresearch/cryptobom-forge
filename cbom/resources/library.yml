@@ -1,0 +1,167 @@
+crypto:
+  algorithms:
+    - AES
+    - ARC4
+    - BLAKE2B
+    - BLAKE2S
+    - BRAINPOOLP256R1
+    - BRAINPOOLP384R1
+    - BRAINPOOLP512R1
+    - CAMELLIA
+    - CAST5
+    - CHACHA20
+    - CHACHA20POLY1305
+    - CONCATKDFHASH
+    - CONCATKDFHMAC
+    - DIFFIEHELLMAN
+    - DSA
+    - ECDSA
+    - EDDSA
+    - FERNET
+    - HKDF
+    - HKDFEXPAND
+    - IDEA
+    - KBKDFCMAC
+    - KBKDFHMAC
+    - MD5
+    - PBKDF2HMAC
+    - PSS
+    - RSA
+    - SCRYPT
+    - SECP192R1
+    - SECP224R1
+    - SECP256K1
+    - SECP256R1
+    - SECP384R1
+    - SECP521R1
+    - SECT163K1
+    - SECT163R2
+    - SECT233K1
+    - SECT233R1
+    - SECT283K1
+    - SECT283R1
+    - SECT409K1
+    - SECT409R1
+    - SECT571K1
+    - SECT571R1
+    - SEED
+    - SHA1
+    - SHA224
+    - SHA256
+    - SHA3224
+    - SHA3256
+    - SHA3384
+    - SHA3512
+    - SHA384
+    - SHA512
+    - SHA512224
+    - SHA512256
+    - SHAKE
+    - SM3
+    - SM4
+    - TRIPLEDES
+    - X963KDF
+
+  block-modes:
+    - CBC
+    - CCM
+    - CFB
+    - CFB1
+    - CFB8
+    - CTR
+    - ECB
+    - GCM
+    - OFB
+    - SIV
+    - XTS
+
+  functions:
+    - decapsulate
+    - decrypt
+    - digest
+    - encapsulate
+    - encrypt
+    - generate
+    - keyderive
+    - keygen
+    - sign
+    - tag
+    - verify
+
+  key-lengths:
+    - 128
+    - 196
+    - 256
+    - 512
+    - 1024
+    - 2048
+    - 3072
+    - 4096
+
+  padding-schemes:
+    - OAEP
+    - PKCS1V15
+    - PKCS7
+
+  primitive-mappings:
+    chacha20poly1305: ae
+    rsa: pke
+    aes: blockcipher
+    aes128: blockcipher
+    aes256: blockcipher
+    idea: blockcipher
+    camellia: blockcipher
+    sm4: blockcipher
+    cast5: blockcipher
+    tripledes: blockcipher
+    chacha20: streamcipher
+    arc4: streamcipher
+    shake128: xof
+    kbkdfhmac: mac
+    hkdfexpand: kdf
+    hkdf: kdf
+    kbkdfcmac: kdf
+    x963kdf: kdf
+    pbkdf2hmac: kdf
+    concatkdfhmac: kdf
+    concatkdfhash: kdf
+    diffiehellman: keyagree
+    sha3256: hash
+    sm3: hash
+    shake256: hash # TODO - identify this as SHA-3? - MC
+    sha224: hash
+    sha3224: hash
+    sha3512: hash
+    blake2s: hash
+    md5: hash
+    sha512: hash
+    sha384: hash
+    sha256: hash
+    sha512256: hash
+    scrypt: hash
+    sha1: hash
+    sha3384: hash
+    blake2b: hash
+    pss: signature
+    dsa: signature
+    sect283r1: other # TODO - add Elliptic Curve Parameters to IBM CBOM as PR from SANRESEARCH repo. - MC
+    secp256k1: other # BITCOIN EC parameters - only used by miners and malware. - MC
+    sect283k1: other # EC CURVE PARAM
+    sect571k1: other # EC CURVE PARAM
+    brainpoolp512r1: other # EC CURVE PARAM
+    brainpoolp384r1: other # EC CURVE PARAM
+    seed: other
+    sect409r1: other # EC CURVE PARAM
+    secp192r1: other # EC CURVE PARAM
+    secp256r1: other # EC CURVE PARAM
+    sect233k1: other # EC CURVE PARAM
+    sect163k1: other # EC CURVE PARAM
+    secp384r1: other # EC CURVE PARAM
+    sect571r1: other # EC CURVE PARAM
+    sect409k1: other # EC CURVE PARAM
+    brainpoolp256r1: other # EC CURVE PARAM
+    sect163r2: other # EC CURVE PARAM
+    sect233r1: other # EC CURVE PARAM
+    secp224r1: other # EC CURVE PARAM
+    secp521r1: other # EC CURVE PARAM
+    sha512224: other # EC CURVE PARAM

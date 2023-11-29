@@ -1,0 +1,185 @@
+################################
+#          BAD CRYPTO
+################################
+
+- name: MD5-detect
+  detection:
+    type: error
+    severity: 9.0
+    description: MD5 was detected, which is a deprecated hashing algorithm that is prone to collisions, and should not be used.
+  patterns:
+    - ('algo', 'r', '(?i)MD5')
+
+- name: SHA1-detect
+  detection:
+    type: error
+    severity: 7.0
+    description: SHA1 was detected, which is a recognized unsafe hashing algorithm. This should be removed as soon as possible to prevent cryptographic issues.
+  patterns:
+    - ('algo', 'r', '(?i)SHA1')
+
+- name: RSA-unsafe-key
+  detection:
+    type: warning
+    severity: 5.0
+    description: The RSA key was found to be too short.
+  patterns:
+    - ('keylen', 'lt', 2048)
+    - ('algo', 'eq', 'RSA')
+
+- name: AES-ECB-mode
+  detection:
+    type: error
+    severity: 9.0
+    description: AES was found operating in ECB mode. Please don't.
+  patterns:
+    - ('algo', 's', 'AES')
+    - ('mode', 's', 'ECB')
+
+- name: AES-CBC-mode
+  detection:
+    type: warning
+    severity: 4.0
+    description: AES was found operating in CBC mode, which will need manual review to determine if it is implemented safely.
+  patterns:
+    - ('algo', 'eq', 'AES')
+    - ('mode', 's', 'CBC')
+
+- name: CAMELLIA-CBC-mode
+  detection:
+    type: warning
+    severity: 4.0
+    description: CAMELLIA was found operating in CBC mode, which will need manual review to determine if it is implemented safely.
+  patterns:
+    - ('algo', 'eq', 'CAMELLIA')
+    - ('mode', 's', 'CBC')
+
+- name: 3DES-detect
+  detection:
+    type: warning
+    severity: 9.0
+    description: 3DES was found which is a now-deprecated algorithm. This should be changed as soon as practical.
+  patterns:
+    - ('algo', 'r', '(3DES|TRIPLEDES|2TDEA|3TDEA)')
+
+- name: PKCS-detect
+  detection:
+    type: warning
+    severity: 3.0
+    description: A potentially vulnerable version of PKCS was found to be in use - it should be checked that this is not a vulnerable version (1/1.5).
+  patterns:
+    - ('algo', 'r', 'PKCS(1|1.5)')
+
+- name: RC4-detect
+  detection:
+    type: error
+    severity: 4.0
+    description: RC4 was detected. This is a deprecated cipher that is highly vulnerable and should be replaced as soon as possible.
+  patterns:
+    - ('algo', 'r', '(?i)(RC4|ARCFOUR|ARC4)')
+
+
+- name: IDEA-detect
+  detection:
+    type: error
+    severity: 4.0
+    description: IDEA (International Data Encryption Algorithm) was detected. Whilst this is not necessarily insecure, it has been deprecated in RFC5469.
+  patterns:
+    - ('algo', 'r', '(?i)(IDEA)')
+
+- name: BLOWFISH-detect
+  detection:
+    type: error
+    severity: 4.0
+    description: BLOWFISH cipher was detected. This is a deprecated cipher that should be replaced as soon as possible.
+  patterns:
+    - ('algo', 'r', '(?i)(BLOWFISH)')
+
+#- name: Insecure-mode-detect
+#  detection:
+#    type: error
+#    severity: 4.0
+#    description: An insecure mode was detected - these modes (ECB, CFB, OFB, and CTR) are not considered best practice and should be replaced with more advanced modes such as GCM, or AEAD should be applied.
+#  patterns:
+#    - ('mode', 'r', '(ECB|CFB|OFB|CTR)')
+
+################################
+#        NON-PQC CRYPTO
+################################
+
+
+- name: AES-128-not-PQC
+  detection:
+    type: warning
+    severity: 3.0
+    description: AES-128 was found, which is vulnerable to Grover's search cryptanalytic attack.
+  patterns:
+    - ('algo', 's', 'AES')
+    - ('keylen', 'eq', 128)
+
+- name: AES-192-not-PQC
+  detection:
+    type: warning
+    severity: 3.0
+    description: AES-192 was found, which is vulnerable to Grover's search cryptanalytic attack.
+  patterns:
+    - ('algo', 's', 'AES')
+    - ('keylen', 'eq', 192)
+
+- name: DH-detect
+  detection:
+    type: note
+    severity: 3.0
+    description: DH was found in use, which is not Post-Quantum Safe and should be flagged for migration to PQC algorithms when they become available.
+  patterns:
+    - ('algo', 's', '(DIFFIEHELLMAN|DH\w)')
+
+- name: RSA-detect
+  detection:
+    type: note
+    severity: 3.0
+    description: RSA was found in use, which is not Post-Quantum Safe and should be flagged for migration to PQC algorithms when they become available.
+  patterns:
+    - ('algo', 's', 'RSA')
+
+- name: RSA-quantum-unsafe-key
+  detection:
+    type: note
+    severity: 3.0
+    description: RSA was found in use, which is not Post-Quantum Safe and should be flagged for migration to PQC algorithms when they become available.
+  patterns:
+    - ('algo', 's', 'RSA')
+    - ('keylen', 'gteq', 2048)
+    - ('keylen', 'lt', 4096)
+
+- name: DSA-detect
+  detection:
+    type: note
+    severity: 3.0
+    description: DSA was found in use, which may not be Post-Quantum Safe and should be flagged for checking and migration to PQC algorithms when they become available.
+  patterns:
+    - ('algo', 'eq', 'DSA')
+
+- name: ECDSA-detect
+  detection:
+    type: note
+    severity: 3.0
+    description: ECDSA was found in use, which is not Post-Quantum Safe and should be flagged for migration to PQC algorithms when they become available.
+  patterns:
+    - ('algo', 'eq', 'ECDSA')
+
+- name: EdDSA-detect
+  detection:
+    type: note
+    severity: 3.0
+    description: EdDSA was found in use, which is not Post-Quantum Safe and should be flagged for migration to PQC algorithms when they become available.
+  patterns:
+    - ('algo', 'eq', 'EdDSA')
+
+- name: MAC-detect
+  detection:
+    type: note
+    severity: 3.0
+    description: A MAC was found in use. These should be manually reviewed to ensure they are Post-Quantum Safe and should be flagged for migration to PQC algorithms when they become available where necessary.
+  patterns:
+    - ('algo', 'r', '(HMAC|KMAC|CMAC)')

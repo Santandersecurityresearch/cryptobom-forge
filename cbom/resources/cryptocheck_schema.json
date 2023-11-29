@@ -1,0 +1,65 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "detection": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "error",
+                            "warning",
+                            "note"
+                        ]
+                    },
+                    "severity": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "default": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "error",
+                            "warning",
+                            "note"
+                        ]
+                    },
+                    "severity": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 10
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "patterns": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "pattern": "^\\('(algo|keylen|mode|padding)', ?'(r|s|lt|gt|lteq|gteq|eq|neq)', ?.*\\)$"
+                }
+            }
+        },
+        "required": [
+            "name",
+            "detection",
+            "patterns"
+        ]
+    }
+}
