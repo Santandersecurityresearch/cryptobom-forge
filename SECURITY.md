@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Encryptobom-forge is a best effort project , we will try to fix issues and welcome bug reports and feature requests. 
+Cryptobom-forge is a best effort project , we will try to fix issues and welcome bug reports and feature requests. 
 
 
 | Version | Supported          |

@@ -5,7 +5,7 @@ build-backend = 'setuptools.build_meta'
 [project]
 dynamic = ['version']
 
-name = 'encryptobom-forge'
+name = 'cryptobom-forge'
 description = 'Generate a cryptographic bill of materials from CodeQL output!'
 dependencies = [
     'cyclonedx-python-lib @ git+ssh://git@github.com/pre-quantum-research/cyclonedx-python-lib.git@cbom#egg=cyclonedx-python-lib',
@@ -37,9 +37,9 @@ classifiers = [
 generate-cbom = 'cbom.main:start'
 
 [project.urls]
-Repository = "https://github.com/santandersecurityresearch/encryptobom-forge.git"
-Issues = "https://github.com/santandersecurityresearch/encryptobom-forge/issues"
-Changelog = "https://github.com/santandersecurityresearch/encryptobom-forge/blob/main/CHANGELOG.rst"
+Repository = "https://github.com/santandersecurityresearch/cryptobom-forge.git"
+Issues = "https://github.com/santandersecurityresearch/cryptobom-forge/issues"
+Changelog = "https://github.com/santandersecurityresearch/cryptobom-forge/blob/main/CHANGELOG.rst"
 
 [tool.setuptools.packages]
 find = {}

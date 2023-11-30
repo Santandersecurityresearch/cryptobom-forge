@@ -1,4 +1,4 @@
-# Encryptobom Forge Tool: Generating Comprehensive CBOMs from CodeQL Outputs
+# Cryptobom Forge Tool: Generating Comprehensive CBOMs from CodeQL Outputs
 
 This repository houses all the tools and utilities one would need in order to parse the Multi-Repository Variant Analysis output from CodeQL runs. It is part of the wider release looking at analysing and creating Cryptographic Bill of Materials (CBOM) for [this](https://www.blackhat.com/eu-23/briefings/schedule/#the-magnetic-pull-of-mutable-protection-worked-examples-in-cryptographic-agility-36030) Blackhat talk 
 
@@ -23,16 +23,16 @@ This repository houses all the tools and utilities one would need in order to pa
 
 Step 1 - Acquire the Latest Release:
 
-Visit the [releases](https://github.com/santandersecurityresearch/encryptobom-forge/releases) page to download the most recent version of Encryptobom Forge. This ensures that you have access to the latest features and security updates.
+Visit the [releases](https://github.com/santandersecurityresearch/cryptobom-forge/releases) page to download the most recent version of Cryptobom Forge. This ensures that you have access to the latest features and security updates.
 
 **Step 2 - Installation:**
 
 Integrate the tool into your local Python environment using the Wheel package:
 
 ```
-pip install encryptobom_forge-{VERSION}-py3-none-any.whl
+pip install cryptobom_forge-{VERSION}-py3-none-any.whl
 ```
-Replace {VERSION} with the specific version number you downloaded. This step equips your environment with the necessary dependencies and modules for Encryptobom Forge.
+Replace {VERSION} with the specific version number you downloaded. This step equips your environment with the necessary dependencies and modules for Cryptobom Forge.
 
 **Step 3 - Execution**
 
@@ -48,7 +48,7 @@ The <path> parameter is versatile, accepting either:
 * A path to a single CodeQL output file, or
 * A directory path containing multiple CodeQL outputs.
 
-For each file, Encryptobom Forge meticulously parses the data to produce a comprehensive CBOM. This CBOM encapsulates detailed insights into the cybersecurity aspects of your project, essential for advanced security analysis.
+For each file, Cryptobom Forge meticulously parses the data to produce a comprehensive CBOM. This CBOM encapsulates detailed insights into the cybersecurity aspects of your project, essential for advanced security analysis.
 
 Output Example:
 Upon successful execution, you will receive a detailed CBOM, structured as follows:
