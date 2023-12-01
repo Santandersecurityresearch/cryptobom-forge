@@ -372,6 +372,16 @@ or for AES in CBC mode:
 
 The format for the output can be found in the above extract from a SARIF output.
 
+
+## Ongoing Development & The Community
+
+The need for adaptable and robust cryptographic solutions has never been greater. This project aims to address these challenges by developing tools and methodologies that can quickly and efficiently adapt to new cryptographic standards and threats.
+
+We are seeking contributors who are passionate about cryptography, security engineering, and the development of future-proof cryptographic systems. Whether you have ideas for new features, improvements to existing ones, or strategies to enhance the tool's accessibility and usability, your input is invaluable. 
+
+We'd love to hear issues or accept pull requests to make it better. 
+
+
 ## Who Is Behind It?
 
 This was developed by Emile El-qawas (@emilejq) of the Santander UK Security Engineering team with help from Mark Carney (@unprovable) and Daniel Cuthbert (@danielcuthbert) of Santander's Cyber Security Research (CSR) team as part of our Blackhat EU 2023 research release. 
