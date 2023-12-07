@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from cyclonedx.model.bom import Bom
+from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.crypto import AssetType
 from cyclonedx.output.json import JsonV1Dot4CbomV1Dot0
 
@@ -58,6 +59,8 @@ def _read_file(query_file, exclusion_pattern=None):
             if version_control_details := query_output.get('versionControlProvenance'):
                 root_component = metadata.get_root_component_info(version_control_details=version_control_details[0])
                 cbom.metadata.component = root_component
+            else:
+                cbom.metadata.component = Component(name='root', type=ComponentType.APPLICATION)
             for tool in metadata.get_tool_info(tool_info=query_output['tool']):
                 cbom.metadata.tools.add(tool)
 
