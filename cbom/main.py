@@ -56,6 +56,22 @@ def _read_file(query_file, application_name=None, exclusion_pattern=None):
     with open(query_file) as query_output:
         query_output = json.load(query_output)['runs'][0]
 
+        for result in query_output['results']:
+          snippet = result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
+          lineStart = result['locations'][0]['physicalLocation']['region']['startLine']
+          snippetStart = result['locations'][0]['physicalLocation']['contextRegion']['startLine']
+
+          # Check if '\r\n' is present in the snippet before splitting
+          if '\r\n' in snippet:
+            actualLine = ""
+            array_of_lines = []
+            # Split the code snippet at instances of '\r\n' and handle consecutive newlines
+            array_of_lines = [line.strip() for line in snippet.split('\r\n')]
+            actualLine = array_of_lines[lineStart - 1]
+
+            # Update the snippet record in query_output
+            result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'] = actualLine
+
         if file_count < 2:
             if application_name:
                 cbom.metadata.component = Component(name=application_name, type=ComponentType.APPLICATION)
