@@ -64,9 +64,8 @@ def _read_file(query_file, application_name=None, exclusion_pattern=None):
           #endLine = result['locations'][0]['physicalLocation']['region']['endLine']
           snippetStart = result['locations'][0]['physicalLocation']['contextRegion']['startLine']
 
-          # Check if '\r\n' is present in the snippet before splitting
+          # Check if '\r\n' or '\n' is present in the snippet before splitting
           needToSplit = False
-          
           if '\r\n' in snippet:
             splitValue = '\r\n'
             needToSplit = True
