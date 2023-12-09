@@ -59,6 +59,8 @@ def _read_file(query_file, application_name=None, exclusion_pattern=None):
         for result in query_output['results']:
           snippet = result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
           lineStart = result['locations'][0]['physicalLocation']['region']['startLine']
+          lineStartCol = result['locations'][0]['physicalLocation']['region']['startColumn']
+          lineEndCol = result['locations'][0]['physicalLocation']['region']['endColumn']
           #endLine = result['locations'][0]['physicalLocation']['region']['endLine']
           snippetStart = result['locations'][0]['physicalLocation']['contextRegion']['startLine']
 
@@ -79,9 +81,10 @@ def _read_file(query_file, application_name=None, exclusion_pattern=None):
             array_of_lines = [line.strip() for line in snippet.split(splitValue)]
             listItemToGet = lineStart - snippetStart
             actualLine = array_of_lines[listItemToGet]
+            actualString = actualLine[lineStartCol-1:lineEndCol]
 
             # Update the snippet record in query_output
-            result['locations'][0]['physicalLocation']['contextRegion']['snippet']['exactText'] = actualLine
+            result['locations'][0]['physicalLocation']['contextRegion']['snippet']['exactText'] = actualString
 
         if file_count < 2:
             if application_name:
