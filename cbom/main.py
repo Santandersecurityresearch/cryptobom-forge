@@ -58,32 +58,32 @@ def _read_file(query_file, application_name=None, exclusion_pattern=None):
 
         for result in query_output['results']:
           snippet = result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
-          lineStart = result['locations'][0]['physicalLocation']['region']['startLine']
-          lineStartCol = result['locations'][0]['physicalLocation']['region']['startColumn']
-          lineEndCol = result['locations'][0]['physicalLocation']['region']['endColumn']
-          #endLine = result['locations'][0]['physicalLocation']['region']['endLine']
-          snippetStart = result['locations'][0]['physicalLocation']['contextRegion']['startLine']
+          snippet_start = result['locations'][0]['physicalLocation']['contextRegion']['startLine']
+          line_start = result['locations'][0]['physicalLocation']['region']['startLine']
+          line_end = result['locations'][0]['physicalLocation']['region'].get('endLine', None)
+          line_start_col = result['locations'][0]['physicalLocation']['region']['startColumn']
+          line_end_col = result['locations'][0]['physicalLocation']['region']['endColumn']
 
           # Check if '\r\n' or '\n' is present in the snippet before splitting
-          needToSplit = False
-          if '\r\n' in snippet:
-            splitValue = '\r\n'
-            needToSplit = True
-          elif '\n' in snippet:
-            splitValue = '\n'
-            needToSplit = True
+          split_value = '\r\n' if '\r\n' in snippet else '\n' if '\n' in snippet else None
           
-          if needToSplit:
-            actualLine = ""
-            array_of_lines = []
+          if split_value:
+            start_line_index  = line_start - snippet_start
             # Split the code snippet at instances of '\r\n' or '\n' and handle consecutive newlines
-            array_of_lines = [line.strip() for line in snippet.split(splitValue)]
-            listItemToGet = lineStart - snippetStart
-            actualLine = array_of_lines[listItemToGet]
-            actualString = actualLine[lineStartCol-1:lineEndCol]
+            array_of_lines = [line.strip() for line in snippet.split(split_value)]
+            if line_end is None or (line_start == line_end):
+              actual_line = array_of_lines[start_line_index]
+              actual_string = actual_line[line_start_col - 1:line_end_col]
+            else:
+              end_line_index = start_line_index + (line_end - line_start)
+              actual_lines = array_of_lines[start_line_index:end_line_index + 1]
+              # Adjust the first and last lines to only include the necessary columns
+              actual_lines[0] = actual_lines[0][line_start_col - 1:]
+              actual_lines[-1] = actual_lines[-1][:line_end_col]
+              actual_string = split_value.join(actual_lines)
 
             # Update the snippet record in query_output
-            result['locations'][0]['physicalLocation']['contextRegion']['snippet']['exactText'] = actualString
+            result['locations'][0]['physicalLocation']['contextRegion']['snippet']['exactText'] = actual_string
 
         if file_count < 2:
             if application_name:
