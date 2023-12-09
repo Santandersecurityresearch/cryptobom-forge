@@ -59,18 +59,29 @@ def _read_file(query_file, application_name=None, exclusion_pattern=None):
         for result in query_output['results']:
           snippet = result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
           lineStart = result['locations'][0]['physicalLocation']['region']['startLine']
+          #endLine = result['locations'][0]['physicalLocation']['region']['endLine']
           snippetStart = result['locations'][0]['physicalLocation']['contextRegion']['startLine']
 
           # Check if '\r\n' is present in the snippet before splitting
+          needToSplit = False
+          
           if '\r\n' in snippet:
+            splitValue = '\r\n'
+            needToSplit = True
+          elif '\n' in snippet:
+            splitValue = '\n'
+            needToSplit = True
+          
+          if needToSplit:
             actualLine = ""
             array_of_lines = []
-            # Split the code snippet at instances of '\r\n' and handle consecutive newlines
-            array_of_lines = [line.strip() for line in snippet.split('\r\n')]
-            actualLine = array_of_lines[lineStart - 1]
+            # Split the code snippet at instances of '\r\n' or '\n' and handle consecutive newlines
+            array_of_lines = [line.strip() for line in snippet.split(splitValue)]
+            listItemToGet = lineStart - snippetStart
+            actualLine = array_of_lines[listItemToGet]
 
             # Update the snippet record in query_output
-            result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'] = actualLine
+            result['locations'][0]['physicalLocation']['contextRegion']['snippet']['exactText'] = actualLine
 
         if file_count < 2:
             if application_name:
