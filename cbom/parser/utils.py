@@ -25,7 +25,7 @@ def get_detection_contexts(locations):
 def get_algorithm(code_snippet):
     match = _ALGORITHM_REGEX.search(code_snippet)
     if match:
-        return match.group()
+        return match.group().upper()
     return 'unknown'
 
 

@@ -47,7 +47,7 @@ def _generate_crypto_component(codeql_result):
     code_snippet = codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
     algorithm = utils.get_algorithm(code_snippet)
 
-    if algorithm.lower() == 'fernet':
+    if algorithm == 'FERNET':
         algorithm, key_size, mode = 'AES', '128', Mode.CBC
         primitive = Primitive.BLOCK_CIPHER
     else:
