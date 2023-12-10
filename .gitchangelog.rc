@@ -23,6 +23,7 @@
 ##
 ##       'refactor' is obviously for refactoring code only
 ##       'minor' is for a very meaningless change (a typo, adding a comment)
+##       'tests' is for a change only to the tests
 ##       'wip' is for partial functionality but complete sub-functionality
 ##       'ignore' for any other commit that should be excluded from the changelog
 ##       'deprecate' is for deprecating things
@@ -54,6 +55,7 @@ ignore_regexps = [
     r'!ignore',
     r'!minor',
     r'!refactor',
+    r'!tests',
     r'!wip',
     r'^$',  ## empty messages
 ]
