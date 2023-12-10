@@ -17,6 +17,12 @@ def generate_cbom_for_tests():
     return cbom
 
 
-def load_data(path):
-    with open(Path(__file__).absolute().parent / path) as data:
-        return json.load(data)
+def load_data(code_snippet, line_range=None):
+    with open(Path(__file__).absolute().parent / 'data' / 'codeql' / 'algorithm.sarif') as data:
+        data = json.load(data)
+        data['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'] = code_snippet
+
+        if line_range:
+            data['locations'][0]['physicalLocation']['contextRegion']['startLine'] = line_range[0]
+            data['locations'][0]['physicalLocation']['contextRegion']['endLine'] = line_range[1]
+        return data

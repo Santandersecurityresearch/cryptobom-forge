@@ -6,7 +6,7 @@
         "index": 0
     },
     "message": {
-        "text": "Use of algorithm AES"
+        "text": "Use of algorithm ..."
     },
     "locations": [
         {
@@ -25,7 +25,7 @@
                     "startLine": 28,
                     "endLine": 32,
                     "snippet": {
-                        "text": "def encrypt(text):\nencryptor = Fernet(Fernet.generate_key())\nreturn encryptor.encrypt(text)"
+                        "text": ""
                     }
                 }
             }
