@@ -56,35 +56,6 @@ def _read_file(query_file, application_name=None, exclusion_pattern=None):
     with open(query_file) as query_output:
         query_output = json.load(query_output)['runs'][0]
 
-        for result in query_output['results']:
-          snippet = result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
-          snippet_start = result['locations'][0]['physicalLocation']['contextRegion']['startLine']
-          line_start = result['locations'][0]['physicalLocation']['region']['startLine']
-          line_end = result['locations'][0]['physicalLocation']['region'].get('endLine', None)
-          line_start_col = result['locations'][0]['physicalLocation']['region'].get('startColumn', 1)
-          line_end_col = result['locations'][0]['physicalLocation']['region']['endColumn']
-
-          # Check if '\r\n' or '\n' is present in the snippet before splitting
-          split_value = '\r\n' if '\r\n' in snippet else '\n' if '\n' in snippet else None
-          
-          if split_value:
-            start_line_index  = line_start - snippet_start
-            # Split the code snippet at instances of '\r\n' or '\n' and handle consecutive newlines
-            array_of_lines = [line for line in snippet.split(split_value)]
-            if line_end is None or (line_start == line_end):
-              actual_line = array_of_lines[start_line_index]
-              actual_string = actual_line[line_start_col - 1:line_end_col]
-            else:
-              end_line_index = start_line_index + (line_end - line_start)
-              actual_lines = array_of_lines[start_line_index:end_line_index + 1]
-              # Adjust the first and last lines to only include the necessary columns
-              actual_lines[0] = actual_lines[0][line_start_col - 1:]
-              actual_lines[-1] = actual_lines[-1][:line_end_col]
-              actual_string = split_value.join(actual_lines)
-
-            # Update the snippet record in query_output
-            result['locations'][0]['physicalLocation']['contextRegion']['snippet']['exactText'] = actual_string
-
         if file_count < 2:
             if application_name:
                 cbom.metadata.component = Component(name=application_name, type=ComponentType.APPLICATION)
