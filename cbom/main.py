@@ -61,7 +61,7 @@ def _read_file(query_file, application_name=None, exclusion_pattern=None):
           snippet_start = result['locations'][0]['physicalLocation']['contextRegion']['startLine']
           line_start = result['locations'][0]['physicalLocation']['region']['startLine']
           line_end = result['locations'][0]['physicalLocation']['region'].get('endLine', None)
-          line_start_col = result['locations'][0]['physicalLocation']['region']['startColumn']
+          line_start_col = result['locations'][0]['physicalLocation']['region'].get('startColumn', 1)
           line_end_col = result['locations'][0]['physicalLocation']['region']['endColumn']
 
           # Check if '\r\n' or '\n' is present in the snippet before splitting
