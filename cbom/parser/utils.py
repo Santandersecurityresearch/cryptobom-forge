@@ -47,3 +47,36 @@ def merge_code_snippets(dc1, dc2):
 
     match = SequenceMatcher(None, first, second).find_longest_match()
     return f'{first[:match.a]}{second[:match.size]}{second[match.size:]}'
+
+
+def extract_precise_snippet(code_snippet):
+    snippet = code_snippet['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
+    snippet_start = code_snippet['locations'][0]['physicalLocation']['contextRegion']['startLine']
+    line_start = code_snippet['locations'][0]['physicalLocation']['region']['startLine']
+    line_end = code_snippet['locations'][0]['physicalLocation']['region'].get('endLine', None)
+    line_start_col = code_snippet['locations'][0]['physicalLocation']['region'].get('startColumn', 1)
+    line_end_col = code_snippet['locations'][0]['physicalLocation']['region']['endColumn']
+
+    # Check if '\r\n' or '\n' is present in the snippet before splitting
+    split_value = '\r\n' if '\r\n' in snippet else '\n' if '\n' in snippet else None
+      
+    if split_value:
+        start_line_index  = line_start - snippet_start
+        # Split the code snippet at instances of '\r\n' or '\n' and handle consecutive newlines
+        array_of_lines = [line for line in snippet.split(split_value)]
+        if line_end is None or (line_start == line_end):
+            actual_line = array_of_lines[start_line_index]
+            precise_snippet = actual_line[line_start_col - 1:line_end_col]
+        else:
+            end_line_index = start_line_index + (line_end - line_start)
+            actual_lines = array_of_lines[start_line_index:end_line_index + 1]
+            # Adjust the first and last lines to only include the necessary columns
+            actual_lines[0] = actual_lines[0][line_start_col - 1:]
+            actual_lines[-1] = actual_lines[-1][:line_end_col]
+            precise_snippet = split_value.join(actual_lines)
+
+        # Provide the precise snippet text back
+        return precise_snippet
+    
+    else:
+        return code_snippet['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
