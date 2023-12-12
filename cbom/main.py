@@ -70,7 +70,7 @@ def _read_file(query_file, application_name=None, exclusion_pattern=None):
           if split_value:
             start_line_index  = line_start - snippet_start
             # Split the code snippet at instances of '\r\n' or '\n' and handle consecutive newlines
-            array_of_lines = [line.strip() for line in snippet.split(split_value)]
+            array_of_lines = [line for line in snippet.split(split_value)]
             if line_end is None or (line_start == line_end):
               actual_line = array_of_lines[start_line_index]
               actual_string = actual_line[line_start_col - 1:line_end_col]
