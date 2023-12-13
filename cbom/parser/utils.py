@@ -64,14 +64,12 @@ def extract_precise_snippet(code_snippet):
         array_of_lines = [line for line in snippet.split(split_value)]
         if line_end is None or (line_start == line_end):
             actual_line = array_of_lines[start_line_index]
-            precise_snippet = actual_line[line_start_col - 1:line_end_col]
+            return actual_line[line_start_col - 1:line_end_col]
         else:
             end_line_index = start_line_index + (line_end - line_start)
             actual_lines = array_of_lines[start_line_index:end_line_index + 1]
             actual_lines[0] = actual_lines[0][line_start_col - 1:]
             actual_lines[-1] = actual_lines[-1][:line_end_col]
-            precise_snippet = split_value.join(actual_lines)
-
-        return precise_snippet
+            return split_value.join(actual_lines)
     else:
         return code_snippet['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
