@@ -35,3 +35,6 @@ jobs:
         with:
           name: Test results - ${{ matrix.python-version }}
           path: results.xml
+
+      - name: Run linter
+        uses: chartboost/ruff-action@v1
