@@ -61,7 +61,6 @@ def extract_precise_snippet(snippet, region):
         case _: array_of_lines = snippet.split('\n')[2:]
 
     if not line_end:
-        actual_line = array_of_lines[start_line_index]
         actual_line = array_of_lines[0]
         return actual_line[line_start_col - 1:line_end_col]
     else:
