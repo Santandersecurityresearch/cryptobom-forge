@@ -47,3 +47,25 @@ def merge_code_snippets(dc1, dc2):
 
     match = SequenceMatcher(None, first, second).find_longest_match()
     return f'{first[:match.a]}{second[:match.size]}{second[match.size:]}'
+
+
+def extract_precise_snippet(snippet, region):
+    line_start = region['startLine']
+    line_end = region.get('endLine')
+    line_start_col = region.get('startColumn', 1)
+    line_end_col = region['endColumn']
+
+    match line_start:
+        case 1: array_of_lines = snippet.split('\n')
+        case 2: array_of_lines = snippet.split('\n')[1:]
+        case _: array_of_lines = snippet.split('\n')[2:]
+
+    if not line_end:
+        actual_line = array_of_lines[0]
+        return actual_line[line_start_col - 1:line_end_col]
+    else:
+        end_line_index = (line_end - line_start)
+        actual_lines = array_of_lines[:end_line_index + 1]
+        actual_lines[0] = actual_lines[0][line_start_col - 1:]
+        actual_lines[-1] = actual_lines[-1][:line_end_col]
+        return '\n'.join(actual_lines)
