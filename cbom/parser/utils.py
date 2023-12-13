@@ -6,7 +6,7 @@ from cyclonedx.model.crypto import DetectionContext
 from cbom import lib_utils
 
 _ALGORITHM_REGEX = re.compile(f"{'|'.join(lib_utils.get_algorithms())}", flags=re.IGNORECASE)
-_KEY_LENGTH_REGEX = re.compile(f"\\D({'|'.join([str(l) for l in lib_utils.get_key_lengths()])})\\D")
+_KEY_LENGTH_REGEX = re.compile(f"\\D({'|'.join([str(key_length) for key_length in lib_utils.get_key_lengths()])})\\D")
 
 
 def get_detection_contexts(locations):
@@ -56,9 +56,12 @@ def extract_precise_snippet(snippet, region):
     line_end_col = region['endColumn']
 
     match line_start:
-        case 1: array_of_lines = snippet.split('\n')
-        case 2: array_of_lines = snippet.split('\n')[1:]
-        case _: array_of_lines = snippet.split('\n')[2:]
+        case 1:
+            array_of_lines = snippet.split('\n')
+        case 2:
+            array_of_lines = snippet.split('\n')[1:]
+        case _:
+            array_of_lines = snippet.split('\n')[2:]
 
     if not line_end:
         actual_line = array_of_lines[0]
