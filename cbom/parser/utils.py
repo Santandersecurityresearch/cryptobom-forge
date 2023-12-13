@@ -61,7 +61,7 @@ def extract_precise_snippet(code_snippet):
       
     if split_value:
         start_line_index  = line_start - snippet_start
-        array_of_lines = [line for line in snippet.split(split_value)]
+        array_of_lines = snippet.split(split_value)
         if not line_end:
             actual_line = array_of_lines[start_line_index]
             return actual_line[line_start_col - 1:line_end_col]
