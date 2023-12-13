@@ -28,7 +28,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run unit tests
-        run: python -m pytest --junitxml results.xml
+        run: tox run -e py$version -- --junitxml results.xml
 
       - name: Upload test results
         uses: actions/upload-artifact@master
