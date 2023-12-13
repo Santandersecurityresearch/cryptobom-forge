@@ -65,7 +65,7 @@ def extract_precise_snippet(snippet, region):
         return actual_line[line_start_col - 1:line_end_col]
     else:
         end_line_index = (line_end - line_start)
-        actual_lines = array_of_lines[0:end_line_index + 1]
+        actual_lines = array_of_lines[:end_line_index + 1]
         actual_lines[0] = actual_lines[0][line_start_col - 1:]
         actual_lines[-1] = actual_lines[-1][:line_end_col]
         return '\n'.join(actual_lines)
