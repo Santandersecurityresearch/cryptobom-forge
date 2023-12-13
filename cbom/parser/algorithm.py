@@ -44,9 +44,8 @@ def parse_algorithm(cbom, codeql_result):
 
 
 def _generate_crypto_component(codeql_result):
-    algorithm = utils.get_algorithm(utils.extract_precise_snippet(codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'], codeql_result['locations'][0]['physicalLocation']['region']))
-
     code_snippet = codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
+    algorithm = utils.get_algorithm(utils.extract_precise_snippet(code_snippet, codeql_result['locations'][0]['physicalLocation']['region']))
 
     if algorithm.lower() == 'fernet':
         algorithm, key_size, mode = 'AES', '128', Mode.CBC
