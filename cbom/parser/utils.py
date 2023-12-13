@@ -57,19 +57,14 @@ def extract_precise_snippet(code_snippet):
     line_start_col = code_snippet['locations'][0]['physicalLocation']['region'].get('startColumn', 1)
     line_end_col = code_snippet['locations'][0]['physicalLocation']['region']['endColumn']
 
-    split_value = '\r\n' if '\r\n' in snippet else '\n' if '\n' in snippet else None
-      
-    if split_value:
-        start_line_index  = line_start - snippet_start
-        array_of_lines = snippet.split(split_value)
-        if not line_end:
-            actual_line = array_of_lines[start_line_index]
-            return actual_line[line_start_col - 1:line_end_col]
-        else:
-            end_line_index = start_line_index + (line_end - line_start)
-            actual_lines = array_of_lines[start_line_index:end_line_index + 1]
-            actual_lines[0] = actual_lines[0][line_start_col - 1:]
-            actual_lines[-1] = actual_lines[-1][:line_end_col]
-            return split_value.join(actual_lines)
+    start_line_index = line_start - snippet_start
+    array_of_lines = snippet.split('\n')
+    if not line_end:
+        actual_line = array_of_lines[start_line_index]
+        return actual_line[line_start_col - 1:line_end_col]
     else:
-        return code_snippet['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
+        end_line_index = start_line_index + (line_end - line_start)
+        actual_lines = array_of_lines[start_line_index:end_line_index + 1]
+        actual_lines[0] = actual_lines[0][line_start_col - 1:]
+        actual_lines[-1] = actual_lines[-1][:line_end_col]
+        return split_value.join(actual_lines)
