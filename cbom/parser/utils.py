@@ -67,4 +67,4 @@ def extract_precise_snippet(code_snippet):
         actual_lines = array_of_lines[start_line_index:end_line_index + 1]
         actual_lines[0] = actual_lines[0][line_start_col - 1:]
         actual_lines[-1] = actual_lines[-1][:line_end_col]
-        return split_value.join(actual_lines)
+        return '\n'.join(actual_lines)
