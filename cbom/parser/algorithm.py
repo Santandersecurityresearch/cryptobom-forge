@@ -44,8 +44,7 @@ def parse_algorithm(cbom, codeql_result):
 
 
 def _generate_crypto_component(codeql_result):
-    code_snippet = utils.extract_precise_snippet(codeql_result)
-    algorithm = utils.get_algorithm(code_snippet)
+    algorithm = utils.get_algorithm(utils.extract_precise_snippet(codeql_result))
 
     code_snippet = codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
 
