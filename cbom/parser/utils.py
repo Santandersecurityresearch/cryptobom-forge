@@ -49,22 +49,24 @@ def merge_code_snippets(dc1, dc2):
     return f'{first[:match.a]}{second[:match.size]}{second[match.size:]}'
 
 
-def extract_precise_snippet(code_snippet):
-    snippet = code_snippet['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
-    snippet_start = code_snippet['locations'][0]['physicalLocation']['contextRegion']['startLine']
-    line_start = code_snippet['locations'][0]['physicalLocation']['region']['startLine']
-    line_end = code_snippet['locations'][0]['physicalLocation']['region'].get('endLine')
-    line_start_col = code_snippet['locations'][0]['physicalLocation']['region'].get('startColumn', 1)
-    line_end_col = code_snippet['locations'][0]['physicalLocation']['region']['endColumn']
+def extract_precise_snippet(snippet, region):
+    line_start = region['startLine']
+    line_end = region.get('endLine')
+    line_start_col = region.get('startColumn', 1)
+    line_end_col = region['endColumn']
 
-    start_line_index = line_start - snippet_start
-    array_of_lines = snippet.split('\n')
+    match line_start:
+        case 1: array_of_lines = snippet.split('\n')
+        case 2: array_of_lines = snippet.split('\n')[1:]
+        case _: array_of_lines = snippet.split('\n')[2:]
+
     if not line_end:
         actual_line = array_of_lines[start_line_index]
+        actual_line = array_of_lines[0]
         return actual_line[line_start_col - 1:line_end_col]
     else:
-        end_line_index = start_line_index + (line_end - line_start)
-        actual_lines = array_of_lines[start_line_index:end_line_index + 1]
+        end_line_index = (line_end - line_start)
+        actual_lines = array_of_lines[0:end_line_index + 1]
         actual_lines[0] = actual_lines[0][line_start_col - 1:]
         actual_lines[-1] = actual_lines[-1][:line_end_col]
         return '\n'.join(actual_lines)
