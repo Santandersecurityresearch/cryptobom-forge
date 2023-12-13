@@ -38,3 +38,9 @@ jobs:
 
       - name: Run linter
         uses: chartboost/ruff-action@v1
+
+      - name: Run SAST
+        uses: chartboost/ruff-action@v1
+        with:
+          src: cbom
+          args: --select S
