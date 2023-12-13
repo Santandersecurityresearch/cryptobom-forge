@@ -7,44 +7,9 @@ from cyclonedx.model.crypto import Mode, Padding, Primitive
 from cbom.parser import algorithm
 from tests import utils
 
-_CODE_SNIPPET_AES = '''
-def encrypt(message):
-    padder = padding.PKCS7(128).padder()
-    message = padder.update(message.encode()) + padder.finalize()
-
-    key = os.urandom(32)
-    encryptor = Cipher(
-        algorithms.AES(key),
-        modes.ECB(initialization_vector=os.urandom(16))
-    ).encryptor()
-
-    ciphertext = encryptor.update(message) + encryptor.finalize()
-    return ciphertext
-'''
-
-_CODE_SNIPPET_RSA = '''
-def encrypt(message: str):
-    private_key = rsa.generate_private_key(
-        public_exponent=65537,
-        key_size=2048
-    )
-    public_key = private_key.public_key()
-
-    certificate = x509.CertificateBuilder().public_key(public_key)
-    ciphertext = public_key.encrypt(
-        message.encode(),
-        padding.OAEP(
-            mgf=padding.MGF1(algorithm=hashes.SHA256()),
-            algorithm=hashes.SHA256(),
-            label=None
-        )
-    )
-    return ciphertext
-'''
-
 
 def test_algorithm__should_infer_primitive():
-    codeql_result = utils.load_data(code_snippet=_CODE_SNIPPET_AES)
+    codeql_result = utils.load_data('aes.sarif')
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result)
@@ -54,7 +19,7 @@ def test_algorithm__should_infer_primitive():
 
 
 def test_algorithm__should_extract_mode_for_block_cipher():
-    codeql_result = utils.load_data(code_snippet=_CODE_SNIPPET_AES)
+    codeql_result = utils.load_data('aes.sarif')
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result)
@@ -64,7 +29,7 @@ def test_algorithm__should_extract_mode_for_block_cipher():
 
 
 def test_algorithm__should_extract_padding():
-    codeql_result = utils.load_data(code_snippet=_CODE_SNIPPET_AES)
+    codeql_result = utils.load_data('aes.sarif')
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result)
@@ -74,17 +39,18 @@ def test_algorithm__should_extract_padding():
 
 
 def test_algorithm__should_extract_crypto_functions():
-    codeql_result = utils.load_data(code_snippet=_CODE_SNIPPET_RSA)
+    codeql_result = utils.load_data('rsa.sarif')
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result)
 
     assert len(cbom.components) == 1
-    assert cbom.components[0].crypto_properties.algorithm_properties.crypto_functions == {'generate', 'encrypt'}
+    assert cbom.components[0].crypto_properties.algorithm_properties.crypto_functions == {'generate', 'encrypt', 'sign'}
 
 
 def test_algorithm__should_not_identify_non_function_match_as_crypto_function():
-    codeql_result = utils.load_data(code_snippet=_CODE_SNIPPET_RSA + 'def decrypt(): ...')
+    codeql_result = utils.load_data('rsa.sarif')
+    codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'] += '\n\ndef decrypt(): ...'
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result)
@@ -94,13 +60,7 @@ def test_algorithm__should_not_identify_non_function_match_as_crypto_function():
 
 
 def test_algorithm__should_transform_fernet():
-    code_snippet = '''
-    def encrypt(message):
-        encryptor = Fernet(Fernet.generate_key())
-        ciphertext = encryptor.encrypt(message.encode())
-        return ciphertext
-    '''
-    codeql_result = utils.load_data(code_snippet=code_snippet)
+    codeql_result = utils.load_data('fernet.sarif')
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result)
@@ -110,7 +70,7 @@ def test_algorithm__should_transform_fernet():
 
 
 def test_algorithm__should_generate_certificate_component_for_pke(certificate_mock):
-    codeql_result = utils.load_data(code_snippet=_CODE_SNIPPET_RSA)
+    codeql_result = utils.load_data('rsa.sarif')
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result)
@@ -119,7 +79,7 @@ def test_algorithm__should_generate_certificate_component_for_pke(certificate_mo
 
 
 def test_algorithm__should_generate_private_key_component_for_pke(private_key_mock):
-    codeql_result = utils.load_data(code_snippet=_CODE_SNIPPET_RSA)
+    codeql_result = utils.load_data('rsa.sarif')
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result)
@@ -128,8 +88,9 @@ def test_algorithm__should_generate_private_key_component_for_pke(private_key_mo
 
 
 def test_algorithm__should_update_existing_component_with_overlapping_detection_context():
-    codeql_result_1 = utils.load_data(code_snippet=_CODE_SNIPPET_AES, line_range=(10, 21))
-    codeql_result_2 = utils.load_data(code_snippet=_CODE_SNIPPET_AES, line_range=(20, 31))
+    codeql_result_1 = utils.load_data('aes.sarif')
+    codeql_result_2 = utils.load_data('aes.sarif')
+    utils.edit_line_range_for_component(codeql_result_2, should_overlap=True)
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result_1)
@@ -140,8 +101,9 @@ def test_algorithm__should_update_existing_component_with_overlapping_detection_
 
 
 def test_algorithm__should_update_existing_component_with_new_detection_context():
-    codeql_result_1 = utils.load_data(code_snippet=_CODE_SNIPPET_AES, line_range=(10, 21))
-    codeql_result_2 = utils.load_data(code_snippet=_CODE_SNIPPET_AES, line_range=(50, 61))
+    codeql_result_1 = utils.load_data('aes.sarif')
+    codeql_result_2 = utils.load_data('aes.sarif')
+    utils.edit_line_range_for_component(codeql_result_2, should_overlap=False)
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result_1)
@@ -152,8 +114,8 @@ def test_algorithm__should_update_existing_component_with_new_detection_context(
 
 
 def test_algorithm__should_not_update_existing_component_when_algorithms_are_different():
-    codeql_result_1 = utils.load_data(code_snippet=_CODE_SNIPPET_AES, line_range=(10, 33))
-    codeql_result_2 = utils.load_data(code_snippet=_CODE_SNIPPET_RSA, line_range=(20, 43))
+    codeql_result_1 = utils.load_data('aes.sarif')
+    codeql_result_2 = utils.load_data('rsa.sarif')
 
     cbom = utils.generate_cbom_for_tests()
     algorithm.parse_algorithm(cbom, codeql_result_1)

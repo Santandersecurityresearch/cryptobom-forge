@@ -5,6 +5,21 @@ from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component, ComponentType
 
 
+def edit_line_range_for_component(codeql_result, should_overlap=False):
+    location = codeql_result['locations'][0]['physicalLocation']
+    line_span = location['region']['endLine'] - location['region']['startLine']
+
+    if should_overlap:
+        location['region']['startLine'] = location['region']['endLine'] - 1
+        location['region']['endLine'] = location['region']['endLine'] + line_span - 1
+    else:
+        location['region']['startLine'] = location['region']['endLine'] + 5
+        location['region']['endLine'] = location['region']['endLine'] + line_span + 5
+
+    location['contextRegion']['startLine'] = location['region']['startLine'] - 2
+    location['contextRegion']['endLine'] = location['region']['endLine'] + 2
+
+
 def generate_cbom_for_tests():
     cbom = Bom()
 
@@ -17,12 +32,7 @@ def generate_cbom_for_tests():
     return cbom
 
 
-def load_data(code_snippet, line_range=None):
-    with open(Path(__file__).absolute().parent / 'data' / 'codeql' / 'algorithm.sarif') as data:
+def load_data(file):
+    with open(Path(__file__).absolute().parent / 'data' / 'codeql' / file) as data:
         data = json.load(data)
-        data['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'] = code_snippet
-
-        if line_range:
-            data['locations'][0]['physicalLocation']['contextRegion']['startLine'] = line_range[0]
-            data['locations'][0]['physicalLocation']['contextRegion']['endLine'] = line_range[1]
         return data

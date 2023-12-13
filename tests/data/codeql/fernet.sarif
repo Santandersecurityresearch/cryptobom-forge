@@ -1,0 +1,38 @@
+{
+    "ruleId": "py/quantum-readiness/cbom/all-cryptographic-algorithms",
+    "ruleIndex": 0,
+    "rule": {
+        "id": "py/quantum-readiness/cbom/all-cryptographic-algorithms",
+        "index": 0
+    },
+    "message": {
+        "text": "Use of algorithm FERNET"
+    },
+    "locations": [
+        {
+            "physicalLocation": {
+                "artifactLocation": {
+                    "uri": "springfield-nuclear-power-plant/core-reactor.py",
+                    "uriBaseId": "%SRCROOT%",
+                    "index": 3
+                },
+                "region": {
+                    "startLine": 30,
+                    "endLine": 33,
+                    "endColumn": 22
+                },
+                "contextRegion": {
+                    "startLine": 28,
+                    "endLine": 35,
+                    "snippet": {
+                        "text": "# additional context region\n# additional context region\ndef encrypt(message):\n    encryptor = Fernet(Fernet.generate_key())\n    ciphertext = encryptor.encrypt(message.encode())\n    return ciphertext\n# additional context region\n# additional context region"
+                    }
+                }
+            }
+        }
+    ],
+    "partialFingerprints": {
+        "primaryLocationLineHash": "61744bbabae05152:1",
+        "primaryLocationStartColumnFingerprint": "0"
+    }
+}
