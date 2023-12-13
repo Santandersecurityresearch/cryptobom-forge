@@ -53,7 +53,7 @@ def extract_precise_snippet(code_snippet):
     snippet = code_snippet['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
     snippet_start = code_snippet['locations'][0]['physicalLocation']['contextRegion']['startLine']
     line_start = code_snippet['locations'][0]['physicalLocation']['region']['startLine']
-    line_end = code_snippet['locations'][0]['physicalLocation']['region'].get('endLine', None)
+    line_end = code_snippet['locations'][0]['physicalLocation']['region'].get('endLine')
     line_start_col = code_snippet['locations'][0]['physicalLocation']['region'].get('startColumn', 1)
     line_end_col = code_snippet['locations'][0]['physicalLocation']['region']['endColumn']
 
@@ -62,7 +62,7 @@ def extract_precise_snippet(code_snippet):
     if split_value:
         start_line_index  = line_start - snippet_start
         array_of_lines = [line for line in snippet.split(split_value)]
-        if line_end is None or (line_start == line_end):
+        if not line_end:
             actual_line = array_of_lines[start_line_index]
             return actual_line[line_start_col - 1:line_end_col]
         else:
