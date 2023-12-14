@@ -13,8 +13,18 @@ def get_detection_contexts(locations):
 
     def parse_location(physical_location):
         file_path = physical_location['artifactLocation']['uri']
+
+        # use line numbers from region if possible as they give exist location
+        if region := physical_location.get('region'):
+            start_line = region['startLine']
+            end_line = region.get('endLine', start_line)  # Use start_line if endLine doesn't exist
+            line_numbers = list(range(start_line, end_line + 1))
+        else:
+            line_numbers = []
+
         if context_region := physical_location.get('contextRegion'):
-            line_numbers = list(range(context_region['startLine'], context_region['endLine'] + 1))
+            if not line_numbers:
+                line_numbers = list(range(context_region['startLine'], context_region['endLine'] + 1))
             code_snippet = context_region.get('snippet').get('text')
             return DetectionContext(file_path=file_path, line_numbers=line_numbers, additional_context=code_snippet)
 
