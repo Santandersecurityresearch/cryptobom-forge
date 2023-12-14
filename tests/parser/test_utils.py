@@ -15,6 +15,49 @@ def encrypt(message):
 '''
 
 
+def test_extract_precise_snippet__should_extract_line():
+    region = {
+        'startLine': 10,
+        'endColumn': 25
+    }
+    expected = '    key = os.urandom(32)'
+
+    assert utils.extract_precise_snippet(_CODE_SNIPPET, region) == expected
+
+
+def test_extract_precise_snippet__should_handle_column_start_index():
+    region = {
+        'startLine': 3,
+        'startColumn': 5,
+        'endColumn': 25
+    }
+    expected = 'key = os.urandom(32)'
+
+    assert utils.extract_precise_snippet(_CODE_SNIPPET, region) == expected
+
+
+def test_extract_precise_snippet__should_handle_start_of_file_region():
+    region = {
+        'startLine': 2,
+        'endColumn': 22
+    }
+    expected = 'def encrypt(message):'
+
+    assert utils.extract_precise_snippet(_CODE_SNIPPET, region) == expected
+
+
+def test_extract_precise_snippet__should_handle_multiline_region():
+    region = {
+        'startLine': 10,
+        'startColumn': 5,
+        'endLine': 12,
+        'endColumn': 27
+    }
+    expected = 'key = os.urandom(32)\n    encryptor = Cipher(\n        algorithms.AES(key)'
+
+    assert utils.extract_precise_snippet(_CODE_SNIPPET, region) == expected
+
+
 def test_merge_code_snippets__should_handle_partially_overlapping_contexts():
     partial_code_snippet_1 = '\n'.join(_CODE_SNIPPET.split('\n')[:5])
     partial_code_snippet_2 = '\n'.join(_CODE_SNIPPET.split('\n')[2:])
