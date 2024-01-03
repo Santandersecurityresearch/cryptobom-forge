@@ -81,7 +81,7 @@ def _generate_crypto_component(codeql_result):
             padding=padding,
             crypto_functions=_extract_crypto_functions(codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'])
         ),
-        detection_context=utils.get_detection_contexts(locations=codeql_result['locations'])
+        detection_context=[utils.get_detection_context(codeql_result['locations'][0]['physicalLocation'])]
     )
 
 

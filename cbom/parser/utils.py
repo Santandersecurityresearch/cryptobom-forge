@@ -9,24 +9,19 @@ _ALGORITHM_REGEX = re.compile(f"{'|'.join(lib_utils.get_algorithms())}", flags=r
 _KEY_LENGTH_REGEX = re.compile(f"\\D({'|'.join([str(key_length) for key_length in lib_utils.get_key_lengths()])})\\D")
 
 
-def get_detection_contexts(locations):
-
-    def parse_location(physical_location):
-        file_path = physical_location['artifactLocation']['uri']
-        if context_region := physical_location.get('contextRegion'):
-            line_numbers = list(range(context_region['startLine'], context_region['endLine'] + 1))
-            code_snippet = context_region.get('snippet').get('text')
-            return DetectionContext(file_path=file_path, line_numbers=line_numbers, additional_context=code_snippet)
-
-    detection_contexts = [parse_location(location.get('physicalLocation')) for location in locations]
-    return detection_contexts
-
-
 def get_algorithm(code_snippet):
     match = _ALGORITHM_REGEX.search(code_snippet)
     if match:
         return match.group().upper()
     return 'unknown'
+
+
+def get_detection_context(physical_location):
+    file_path = physical_location['artifactLocation']['uri']
+    if context_region := physical_location.get('contextRegion'):
+        line_numbers = list(range(context_region['startLine'], context_region['endLine'] + 1))
+        code_snippet = context_region.get('snippet').get('text')
+        return DetectionContext(file_path=file_path, line_numbers=line_numbers, additional_context=code_snippet)
 
 
 def get_key_size(code_snippet):

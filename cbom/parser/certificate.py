@@ -52,7 +52,7 @@ def _generate_crypto_component(codeql_result):
             certificate_signature_algorithm=_extract_signature_algorithm(code_snippet),  # todo: dependency relation for signing algorithm
             certificate_format='X.509'
         ),
-        detection_context=utils.get_detection_contexts(locations=codeql_result['locations'])
+        detection_context=[utils.get_detection_context(codeql_result['locations'][0]['physicalLocation'])]
     )
 
 

@@ -49,7 +49,7 @@ def _generate_crypto_component(component, material_type, *, size=None):
             related_crypto_material_type=material_type,
             size=size
         ),
-        detection_context=utils.get_detection_contexts(locations=component['locations'])
+        detection_context=[utils.get_detection_context(component['locations'][0]['physicalLocation'])]
     )
 
 
