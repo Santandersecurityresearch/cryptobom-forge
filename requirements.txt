@@ -4,6 +4,7 @@ build==1.0.3
 certifi==2023.7.22
 cffi==1.16.0
 charset-normalizer==3.3.2
+click~=8.1.7
 cyclonedx-python-lib @ git+https://git@github.com/pre-quantum-research/cyclonedx-python-lib.git@cbom#egg=cyclonedx-python-lib
 defusedxml==0.7.1
 gitchangelog==3.0.4

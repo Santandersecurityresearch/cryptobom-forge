@@ -39,8 +39,7 @@ Replace {VERSION} with the specific version number you downloaded. This step equ
 Generate a CBOM using the following command:
 
 ```
-generate-cbom <path>
-
+cryptobom generate <path>
 ```
 
 The <path> parameter is versatile, accepting either:
@@ -213,6 +212,13 @@ Upon successful execution, you will receive a detailed CBOM, structured as follo
 }
 ```
 
+By default, the output will be printed to `stdout`. You can alternatively write the output to a file using
+`--output-file` or `-o`.
+
+```shell
+$ cryptobom generate <path> --output-file cbom.json
+```
+
 ### Excluding File Paths
 
 You can optionally specify a regex string to ignore findings in files that match that path, using `--exclude` or `-e`.
@@ -221,7 +227,7 @@ The complete file path must match in order for findings to be excluded.
 For example, you may wish to exclude findings in test files:
 
 ```shell
-$ generate-cbom <path> --exclude '(.*/)?test(s)?.*'
+$ cryptobom generate <path> --exclude '(.*/)?test(s)?.*'
 ```
 
 ## Cryptography Checker - Enhanced Cryptography Compliance Analysis

@@ -8,6 +8,7 @@ dynamic = ['version']
 name = 'cryptobom-forge'
 description = 'Generate a cryptographic bill of materials from CodeQL output!'
 dependencies = [
+    'click >= 8.0.0',
     'cyclonedx-python-lib @ git+ssh://git@github.com/pre-quantum-research/cyclonedx-python-lib.git@cbom#egg=cyclonedx-python-lib',
     'jsonschema >= 2.0.0',
     'pyyaml >= 3.10',
@@ -34,7 +35,7 @@ classifiers = [
 ]
 
 [project.scripts]
-generate-cbom = 'cbom.main:start'
+cryptobom = 'cbom.cli.cli:start'
 
 [project.urls]
 Repository = "https://github.com/santandersecurityresearch/cryptobom-forge.git"
