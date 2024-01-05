@@ -1,0 +1,383 @@
+{
+    "components": [
+        {
+            "bom-ref": "cryptography:private_key:90d480d3-42b2-4342-b319-7c5df8856064",
+            "cryptoProperties": {
+                "assetType": "relatedCryptoMaterial",
+                "detectionContext": [
+                    {
+                        "additionalContext": "# additional context region\n# additional context region\ndef encrypt(message):\n    private_key = rsa.generate_private_key(\n        public_exponent=65537,\n        key_size=2048\n    )\n\n    subject = issuer = x509.Name([\n        x509.NameAttribute(NameOID.COUNTRY_NAME, 'US'),\n        x509.NameAttribute(NameOID.LOCALITY_NAME, 'Springfield'),\n        x509.NameAttribute(NameOID.ORGANIZATION_NAME, 'Springfield Nuclear Power Plant'),\n        x509.NameAttribute(NameOID.COMMON_NAME, \"springfield-nuclear.com\")\n    ])\n\n    certificate = (\n        x509.CertificateBuilder()\n        .subject_name(subject)\n        .issuer_name(issuer)\n        .public_key(private_key.public_key())\n        .serial_number(x509.random_serial_number())\n        .not_valid_before(datetime.datetime.now(datetime.timezone.utc))\n        .not_valid_after(datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=10))\n        .add_extension(x509.SubjectAlternativeName([x509.DNSName('localhost')]), critical=False)\n    ).sign(private_key, hashes.SHA256())\n\n    public_key = certificate.public_key()\n    ciphertext = public_key.encrypt(\n        message.encode(),\n        padding.OAEP(\n            mgf=padding.MGF1(algorithm=hashes.SHA256()),\n            algorithm=hashes.SHA256(),\n            label=None\n        )\n    )\n    return ciphertext\n# additional context region\n# additional context region",
+                        "filePath": "springfield-nuclear-power-plant/core-reactor.py",
+                        "lineNumbers": [
+                            28,
+                            29,
+                            30,
+                            31,
+                            32,
+                            33,
+                            34,
+                            35,
+                            36,
+                            37,
+                            38,
+                            39,
+                            40,
+                            41,
+                            42,
+                            43,
+                            44,
+                            45,
+                            46,
+                            47,
+                            48,
+                            49,
+                            50,
+                            51,
+                            52,
+                            53,
+                            54,
+                            55,
+                            56,
+                            57,
+                            58,
+                            59,
+                            60,
+                            61,
+                            62,
+                            63,
+                            64,
+                            65
+                        ]
+                    }
+                ],
+                "relatedCryptoMaterialProperties": {
+                    "relatedCryptoMaterialType": "privateKey",
+                    "size": 2048
+                }
+            },
+            "name": "90d480d3-42b2-4342-b319-7c5df8856064",
+            "type": "crypto-asset"
+        },
+        {
+            "bom-ref": "cryptography:algorithm:f959178c-6674-4041-bcd0-be09ca56c772",
+            "cryptoProperties": {
+                "algorithmProperties": {
+                    "cryptoFunctions": [
+                        "encrypt"
+                    ],
+                    "mode": "ecb",
+                    "padding": "pkcs7",
+                    "primitive": "blockcipher",
+                    "variant": "AES-128-ECB"
+                },
+                "assetType": "algorithm",
+                "detectionContext": [
+                    {
+                        "additionalContext": "# additional context region\n# additional context region\ndef encrypt(message):\n    padder = padding.PKCS7(128).padder()\n    message = padder.update(message.encode()) + padder.finalize()\n\n    key = os.urandom(32)\n    encryptor = Cipher(\n        algorithms.AES(key),\n        modes.ECB(initialization_vector=os.urandom(16))\n    ).encryptor()\n\n    ciphertext = encryptor.update(message) + encryptor.finalize()\n    return ciphertext\n# additional context region\n# additional context region",
+                        "filePath": "springfield-nuclear-power-plant/core-reactor.py",
+                        "lineNumbers": [
+                            28,
+                            29,
+                            30,
+                            31,
+                            32,
+                            33,
+                            34,
+                            35,
+                            36,
+                            37,
+                            38,
+                            39,
+                            40,
+                            41,
+                            42,
+                            43
+                        ]
+                    }
+                ]
+            },
+            "name": "AES-128-ECB-PKCS7",
+            "type": "crypto-asset"
+        },
+        {
+            "bom-ref": "cryptography:algorithm:496f1dcb-ccbc-434e-8918-ff19da3e0819",
+            "cryptoProperties": {
+                "algorithmProperties": {
+                    "cryptoFunctions": [
+                        "encrypt",
+                        "generate",
+                        "sign"
+                    ],
+                    "padding": "oaep",
+                    "primitive": "signature",
+                    "variant": "DSA-2048"
+                },
+                "assetType": "algorithm",
+                "detectionContext": [
+                    {
+                        "additionalContext": "# additional context region\n# additional context region\ndef encrypt(message):\n    private_key = dsa.generate_private_key(\n        key_size=2048\n    )\n\n    subject = issuer = x509.Name([\n        x509.NameAttribute(NameOID.COUNTRY_NAME, 'US'),\n        x509.NameAttribute(NameOID.LOCALITY_NAME, 'Springfield'),\n        x509.NameAttribute(NameOID.ORGANIZATION_NAME, 'Springfield Nuclear Power Plant'),\n        x509.NameAttribute(NameOID.COMMON_NAME, \"springfield-nuclear.com\")\n    ])\n\n    certificate = (\n        x509.CertificateBuilder()\n        .subject_name(subject)\n        .issuer_name(issuer)\n        .public_key(private_key.public_key())\n        .serial_number(x509.random_serial_number())\n        .not_valid_before(datetime.datetime.now(datetime.timezone.utc))\n        .not_valid_after(datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=10))\n        .add_extension(x509.SubjectAlternativeName([x509.DNSName('localhost')]), critical=False)\n    ).sign(private_key, hashes.SHA256())\n\n    public_key = certificate.public_key()\n    ciphertext = public_key.encrypt(\n        message.encode(),\n        padding.OAEP(\n            mgf=padding.MGF1(algorithm=hashes.SHA256()),\n            algorithm=hashes.SHA256(),\n            label=None\n        )\n    )\n    return ciphertext\n# additional context region\n# additional context region",
+                        "filePath": "springfield-nuclear-power-plant/core-reactor.py",
+                        "lineNumbers": [
+                            28,
+                            29,
+                            30,
+                            31,
+                            32,
+                            33,
+                            34,
+                            35,
+                            36,
+                            37,
+                            38,
+                            39,
+                            40,
+                            41,
+                            42,
+                            43,
+                            44,
+                            45,
+                            46,
+                            47,
+                            48,
+                            49,
+                            50,
+                            51,
+                            52,
+                            53,
+                            54,
+                            55,
+                            56,
+                            57,
+                            58,
+                            59,
+                            60,
+                            61,
+                            62,
+                            63,
+                            64
+                        ]
+                    }
+                ]
+            },
+            "name": "DSA-2048-OAEP",
+            "type": "crypto-asset"
+        },
+        {
+            "bom-ref": "cryptography:algorithm:4c003a38-2ab7-4bf3-810f-c0e473d3fff8",
+            "cryptoProperties": {
+                "algorithmProperties": {
+                    "cryptoFunctions": [
+                        "encrypt",
+                        "generate",
+                        "sign"
+                    ],
+                    "padding": "oaep",
+                    "primitive": "pke",
+                    "variant": "RSA-2048"
+                },
+                "assetType": "algorithm",
+                "detectionContext": [
+                    {
+                        "additionalContext": "# additional context region\n# additional context region\ndef encrypt(message):\n    private_key = rsa.generate_private_key(\n        public_exponent=65537,\n        key_size=2048\n    )\n\n    subject = issuer = x509.Name([\n        x509.NameAttribute(NameOID.COUNTRY_NAME, 'US'),\n        x509.NameAttribute(NameOID.LOCALITY_NAME, 'Springfield'),\n        x509.NameAttribute(NameOID.ORGANIZATION_NAME, 'Springfield Nuclear Power Plant'),\n        x509.NameAttribute(NameOID.COMMON_NAME, \"springfield-nuclear.com\")\n    ])\n\n    certificate = (\n        x509.CertificateBuilder()\n        .subject_name(subject)\n        .issuer_name(issuer)\n        .public_key(private_key.public_key())\n        .serial_number(x509.random_serial_number())\n        .not_valid_before(datetime.datetime.now(datetime.timezone.utc))\n        .not_valid_after(datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=10))\n        .add_extension(x509.SubjectAlternativeName([x509.DNSName('localhost')]), critical=False)\n    ).sign(private_key, hashes.SHA256())\n\n    public_key = certificate.public_key()\n    ciphertext = public_key.encrypt(\n        message.encode(),\n        padding.OAEP(\n            mgf=padding.MGF1(algorithm=hashes.SHA256()),\n            algorithm=hashes.SHA256(),\n            label=None\n        )\n    )\n    return ciphertext\n# additional context region\n# additional context region",
+                        "filePath": "springfield-nuclear-power-plant/core-reactor.py",
+                        "lineNumbers": [
+                            28,
+                            29,
+                            30,
+                            31,
+                            32,
+                            33,
+                            34,
+                            35,
+                            36,
+                            37,
+                            38,
+                            39,
+                            40,
+                            41,
+                            42,
+                            43,
+                            44,
+                            45,
+                            46,
+                            47,
+                            48,
+                            49,
+                            50,
+                            51,
+                            52,
+                            53,
+                            54,
+                            55,
+                            56,
+                            57,
+                            58,
+                            59,
+                            60,
+                            61,
+                            62,
+                            63,
+                            64,
+                            65
+                        ]
+                    }
+                ]
+            },
+            "name": "RSA-2048-OAEP",
+            "type": "crypto-asset"
+        },
+        {
+            "bom-ref": "cryptography:certificate:bff25a20-7c0a-490e-959c-85295f4c145b",
+            "cryptoProperties": {
+                "assetType": "certificate",
+                "certificateProperties": {
+                    "certificateAlgorithm": "RSA",
+                    "certificateFormat": "X.509",
+                    "certificateSignatureAlgorithm": "SHA256",
+                    "issuerName": "C=US, L=Springfield, O=Springfield Nuclear Power Plant, CN=springfield-nuclear.com",
+                    "subjectName": "C=US, L=Springfield, O=Springfield Nuclear Power Plant, CN=springfield-nuclear.com"
+                },
+                "detectionContext": [
+                    {
+                        "additionalContext": "# additional context region\n# additional context region\ndef encrypt(message):\n    private_key = rsa.generate_private_key(\n        public_exponent=65537,\n        key_size=2048\n    )\n\n    subject = issuer = x509.Name([\n        x509.NameAttribute(NameOID.COUNTRY_NAME, 'US'),\n        x509.NameAttribute(NameOID.LOCALITY_NAME, 'Springfield'),\n        x509.NameAttribute(NameOID.ORGANIZATION_NAME, 'Springfield Nuclear Power Plant'),\n        x509.NameAttribute(NameOID.COMMON_NAME, \"springfield-nuclear.com\")\n    ])\n\n    certificate = (\n        x509.CertificateBuilder()\n        .subject_name(subject)\n        .issuer_name(issuer)\n        .public_key(private_key.public_key())\n        .serial_number(x509.random_serial_number())\n        .not_valid_before(datetime.datetime.now(datetime.timezone.utc))\n        .not_valid_after(datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=10))\n        .add_extension(x509.SubjectAlternativeName([x509.DNSName('localhost')]), critical=False)\n    ).sign(private_key, hashes.SHA256())\n\n    public_key = certificate.public_key()\n    ciphertext = public_key.encrypt(\n        message.encode(),\n        padding.OAEP(\n            mgf=padding.MGF1(algorithm=hashes.SHA256()),\n            algorithm=hashes.SHA256(),\n            label=None\n        )\n    )\n    return ciphertext\n# additional context region\n# additional context region",
+                        "filePath": "springfield-nuclear-power-plant/core-reactor.py",
+                        "lineNumbers": [
+                            28,
+                            29,
+                            30,
+                            31,
+                            32,
+                            33,
+                            34,
+                            35,
+                            36,
+                            37,
+                            38,
+                            39,
+                            40,
+                            41,
+                            42,
+                            43,
+                            44,
+                            45,
+                            46,
+                            47,
+                            48,
+                            49,
+                            50,
+                            51,
+                            52,
+                            53,
+                            54,
+                            55,
+                            56,
+                            57,
+                            58,
+                            59,
+                            60,
+                            61,
+                            62,
+                            63,
+                            64,
+                            65
+                        ]
+                    }
+                ]
+            },
+            "name": "bff25a20-7c0a-490e-959c-85295f4c145b",
+            "type": "crypto-asset"
+        }
+    ],
+    "dependencies": [
+        {
+            "dependsOn": [
+                "cryptography:algorithm:1b80c552-5c11-48ac-a0f6-edc470a8aa40",
+                "cryptography:algorithm:496f1dcb-ccbc-434e-8918-ff19da3e0819",
+                "cryptography:algorithm:4c003a38-2ab7-4bf3-810f-c0e473d3fff8",
+                "cryptography:algorithm:f959178c-6674-4041-bcd0-be09ca56c772"
+            ],
+            "ref": "58e8d784-8745-4666-964e-7f1ce44446eb"
+        },
+        {
+            "ref": "cryptography:algorithm:1b80c552-5c11-48ac-a0f6-edc470a8aa40"
+        },
+        {
+            "ref": "cryptography:algorithm:496f1dcb-ccbc-434e-8918-ff19da3e0819"
+        },
+        {
+            "dependsOn": [
+                "cryptography:certificate:bff25a20-7c0a-490e-959c-85295f4c145b",
+                "cryptography:private_key:90d480d3-42b2-4342-b319-7c5df8856064"
+            ],
+            "ref": "cryptography:algorithm:4c003a38-2ab7-4bf3-810f-c0e473d3fff8"
+        },
+        {
+            "ref": "cryptography:algorithm:f959178c-6674-4041-bcd0-be09ca56c772"
+        },
+        {
+            "ref": "cryptography:certificate:bff25a20-7c0a-490e-959c-85295f4c145b"
+        },
+        {
+            "ref": "cryptography:private_key:90d480d3-42b2-4342-b319-7c5df8856064"
+        }
+    ],
+    "metadata": {
+        "component": {
+            "bom-ref": "58e8d784-8745-4666-964e-7f1ce44446eb",
+            "name": "root",
+            "type": "application"
+        },
+        "timestamp": "2024-01-04T09:54:58.428646+00:00",
+        "tools": [
+            {
+                "externalReferences": [
+                    {
+                        "type": "build-system",
+                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib/actions"
+                    },
+                    {
+                        "type": "distribution",
+                        "url": "https://pypi.org/project/cyclonedx-python-lib/"
+                    },
+                    {
+                        "type": "documentation",
+                        "url": "https://cyclonedx.github.io/cyclonedx-python-lib/"
+                    },
+                    {
+                        "type": "issue-tracker",
+                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib/issues"
+                    },
+                    {
+                        "type": "license",
+                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/LICENSE"
+                    },
+                    {
+                        "type": "release-notes",
+                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/CHANGELOG.md"
+                    },
+                    {
+                        "type": "vcs",
+                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib"
+                    },
+                    {
+                        "type": "website",
+                        "url": "https://cyclonedx.org"
+                    }
+                ],
+                "name": "cyclonedx-python-lib",
+                "vendor": "CycloneDX",
+                "version": "4.2.2"
+            },
+            {
+                "name": "CodeQL",
+                "vendor": "GitHub",
+                "version": "2.15.4"
+            }
+        ]
+    },
+    "serialNumber": "urn:uuid:6b990ba4-1d57-41f0-b995-11006eb91239",
+    "version": 1,
+    "$schema": "https://raw.githubusercontent.com/IBM/CBOM/main/bom-1.4-cbom-1.0.schema.json",
+    "bomFormat": "CBOM",
+    "specVersion": "1.4-cbom-1.0"
+}
