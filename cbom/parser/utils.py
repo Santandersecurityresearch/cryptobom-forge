@@ -12,7 +12,8 @@ _KEY_LENGTH_REGEX = re.compile(f"\\D({'|'.join([str(key_length) for key_length i
 def get_algorithm(code_snippet):
     match = _ALGORITHM_REGEX.search(code_snippet)
     if match:
-        return match.group().upper()
+        algorithm = match.group().upper()
+        return lib_utils.get_algorithms().get(algorithm) or algorithm  # return full algorithm name if algorithm is aliased e.g. diffiehellman instead of dh
     return 'unknown'
 
 

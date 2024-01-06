@@ -15,6 +15,13 @@ def encrypt(message):
 '''
 
 
+def test_get_algorithm__should_return_full_name_when_matched_algorithm_is_aliased():
+    code_snippet = 'parameters = dh.generate_parameters(generator=2, key_size=2048)'
+    algorithm = utils.get_algorithm(code_snippet)
+
+    assert algorithm == 'DIFFIEHELLMAN'
+
+
 def test_extract_precise_snippet__should_extract_line():
     region = {
         'startLine': 10,
