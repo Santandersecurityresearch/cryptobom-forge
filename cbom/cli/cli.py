@@ -98,8 +98,8 @@ def _process_file(cbom, query_file, exclusion_pattern=None):
         ))
 
         for result in query_output['results']:
-            uri = result['locations'][0]['physicalLocation']['artifactLocation']['uri']
-            if not exclusion_pattern or not exclusion_pattern.fullmatch(uri):
+            result = result['locations'][0]['physicalLocation']
+            if not exclusion_pattern or not exclusion_pattern.fullmatch(result['artifactLocation']['uri']):
                 algorithm.parse_algorithm(cbom, result)
 
 

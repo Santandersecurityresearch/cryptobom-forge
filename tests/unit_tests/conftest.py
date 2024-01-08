@@ -24,7 +24,7 @@ def cbom():
 def aes():
     with open(Path(__file__).absolute().parent / 'data' / 'codeql' / 'aes.sarif') as data:
         data = json.load(data)
-        return data
+        return data['locations'][0]['physicalLocation']
 
 
 @pytest.fixture
@@ -32,11 +32,11 @@ def make_aes_component(aes):
 
     def _make_component(start_line, end_line):
         data = copy.deepcopy(aes)
-        data['locations'][0]['physicalLocation']['region']['startLine'] = start_line
-        data['locations'][0]['physicalLocation']['region']['endLine'] = end_line
+        data['region']['startLine'] = start_line
+        data['region']['endLine'] = end_line
 
-        data['locations'][0]['physicalLocation']['contextRegion']['startLine'] = start_line - 2
-        data['locations'][0]['physicalLocation']['contextRegion']['endLine'] = end_line + 2
+        data['contextRegion']['startLine'] = start_line - 2
+        data['contextRegion']['endLine'] = end_line + 2
         return data
 
     return _make_component
@@ -46,7 +46,7 @@ def make_aes_component(aes):
 def dsa():
     with open(Path(__file__).absolute().parent / 'data' / 'codeql' / 'dsa.sarif') as data:
         data = json.load(data)
-        return data
+        return data['locations'][0]['physicalLocation']
 
 
 @pytest.fixture
@@ -54,11 +54,11 @@ def make_dsa_component(dsa):
 
     def _make_component(start_line, end_line):
         data = copy.deepcopy(dsa)
-        data['locations'][0]['physicalLocation']['region']['startLine'] = start_line
-        data['locations'][0]['physicalLocation']['region']['endLine'] = end_line
+        data['region']['startLine'] = start_line
+        data['region']['endLine'] = end_line
 
-        data['locations'][0]['physicalLocation']['contextRegion']['startLine'] = start_line - 2
-        data['locations'][0]['physicalLocation']['contextRegion']['endLine'] = end_line + 2
+        data['contextRegion']['startLine'] = start_line - 2
+        data['contextRegion']['endLine'] = end_line + 2
         return data
 
     return _make_component
@@ -68,14 +68,14 @@ def make_dsa_component(dsa):
 def fernet():
     with open(Path(__file__).absolute().parent / 'data' / 'codeql' / 'fernet.sarif') as data:
         data = json.load(data)
-        return data
+        return data['locations'][0]['physicalLocation']
 
 
 @pytest.fixture()
 def rsa():
     with open(Path(__file__).absolute().parent / 'data' / 'codeql' / 'rsa.sarif') as data:
         data = json.load(data)
-        return data
+        return data['locations'][0]['physicalLocation']
 
 
 @pytest.fixture
@@ -83,11 +83,11 @@ def make_rsa_component(rsa):
 
     def _make_component(start_line, end_line):
         data = copy.deepcopy(rsa)
-        data['locations'][0]['physicalLocation']['region']['startLine'] = start_line
-        data['locations'][0]['physicalLocation']['region']['endLine'] = end_line
+        data['region']['startLine'] = start_line
+        data['region']['endLine'] = end_line
 
-        data['locations'][0]['physicalLocation']['contextRegion']['startLine'] = start_line - 2
-        data['locations'][0]['physicalLocation']['contextRegion']['endLine'] = end_line + 2
+        data['contextRegion']['startLine'] = start_line - 2
+        data['contextRegion']['endLine'] = end_line + 2
         return data
 
     return _make_component

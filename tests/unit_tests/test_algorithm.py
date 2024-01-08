@@ -36,7 +36,7 @@ def test_algorithm__should_extract_crypto_functions(cbom, rsa):
 
 
 def test_algorithm__should_not_identify_non_function_match_as_crypto_function(cbom, rsa):
-    rsa['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'] += '\n\ndef decrypt(): ...'
+    rsa['contextRegion']['snippet']['text'] += '\n\ndef decrypt(): ...'
 
     algorithm.parse_algorithm(cbom, rsa)
 
