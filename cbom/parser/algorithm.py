@@ -47,6 +47,9 @@ def _generate_crypto_component(finding):
     code_snippet = finding['contextRegion']['snippet']['text']
     algorithm = utils.get_algorithm(utils.extract_precise_snippet(code_snippet, finding['region']))
 
+    if algorithm == 'unknown':
+        algorithm = utils.get_algorithm(code_snippet)
+
     if algorithm == 'FERNET':
         algorithm, key_size, mode = 'AES', '128', Mode.CBC
         primitive = Primitive.BLOCK_CIPHER
