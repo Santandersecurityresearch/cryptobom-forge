@@ -1,0 +1,38 @@
+{
+    "ruleId": "py/quantum-readiness/cbom/all-cryptographic-algorithms",
+    "ruleIndex": 0,
+    "rule": {
+        "id": "py/quantum-readiness/cbom/all-cryptographic-algorithms",
+        "index": 0
+    },
+    "message": {
+        "text": "Use of algorithm AES"
+    },
+    "locations": [
+        {
+            "physicalLocation": {
+                "artifactLocation": {
+                    "uri": "springfield-nuclear-power-plant/core-reactor.py",
+                    "uriBaseId": "%SRCROOT%",
+                    "index": 3
+                },
+                "region": {
+                    "startLine": 30,
+                    "endLine": 41,
+                    "endColumn": 22
+                },
+                "contextRegion": {
+                    "startLine": 28,
+                    "endLine": 43,
+                    "snippet": {
+                        "text": "# additional context region\n# additional context region\ndef encrypt(message):\n    padder = padding.PKCS7(128).padder()\n    message = padder.update(message.encode()) + padder.finalize()\n\n    key = os.urandom(32)\n    encryptor = Cipher(\n        algorithms.AES(key),\n        modes.ECB(initialization_vector=os.urandom(16))\n    ).encryptor()\n\n    ciphertext = encryptor.update(message) + encryptor.finalize()\n    return ciphertext\n# additional context region\n# additional context region"
+                    }
+                }
+            }
+        }
+    ],
+    "partialFingerprints": {
+        "primaryLocationLineHash": "61744bbabae05152:1",
+        "primaryLocationStartColumnFingerprint": "0"
+    }
+}

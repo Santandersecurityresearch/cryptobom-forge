@@ -12,8 +12,8 @@ _FUNCTION_REGEX = re.compile(f"\\.[A-Z_\\d]*({'|'.join(lib_utils.get_functions()
 _PADDING_REGEX = re.compile(f"{'|'.join(lib_utils.get_padding_schemes())}", flags=re.IGNORECASE)
 
 
-def parse_algorithm(cbom, codeql_result):
-    crypto_properties = _generate_crypto_component(codeql_result)
+def parse_algorithm(cbom, finding):
+    crypto_properties = _generate_crypto_component(finding)
     if (padding := crypto_properties.algorithm_properties.padding) not in [Padding.OTHER, Padding.UNKNOWN]:
         name = f'{crypto_properties.algorithm_properties.variant}-{padding.value.upper()}'
     else:
@@ -33,21 +33,24 @@ def parse_algorithm(cbom, codeql_result):
         algorithm_component = _update_existing_component(existing_component, algorithm_component)
 
     if crypto_properties.algorithm_properties.primitive == Primitive.PUBLIC_KEY_ENCRYPTION:
-        code_snippet = codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
+        code_snippet = finding['contextRegion']['snippet']['text']
         if 'key' in code_snippet.lower():
-            private_key_component = related_crypto_material.parse_private_key(cbom, codeql_result)
+            private_key_component = related_crypto_material.parse_private_key(cbom, finding)
             cbom.register_dependency(algorithm_component, depends_on=[private_key_component])
 
         if 'x509' in code_snippet.lower() or 'x.509' in code_snippet.lower():
-            certificate_component = certificate.parse_x509_certificate_details(cbom, codeql_result)
+            certificate_component = certificate.parse_x509_certificate_details(cbom, finding)
             cbom.register_dependency(algorithm_component, depends_on=[certificate_component])
 
 
-def _generate_crypto_component(codeql_result):
-    code_snippet = codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
-    algorithm = utils.get_algorithm(code_snippet)
+def _generate_crypto_component(finding):
+    code_snippet = finding['contextRegion']['snippet']['text']
+    algorithm = utils.get_algorithm(utils.extract_precise_snippet(code_snippet, finding['region']))
 
-    if algorithm.lower() == 'fernet':
+    if algorithm == 'unknown':
+        algorithm = utils.get_algorithm(code_snippet)
+
+    if algorithm == 'FERNET':
         algorithm, key_size, mode = 'AES', '128', Mode.CBC
         primitive = Primitive.BLOCK_CIPHER
     else:
@@ -79,9 +82,9 @@ def _generate_crypto_component(codeql_result):
             variant=_build_variant(algorithm, key_size=key_size, block_mode=mode),
             mode=mode,
             padding=padding,
-            crypto_functions=_extract_crypto_functions(codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'])
+            crypto_functions=_extract_crypto_functions(code_snippet)
         ),
-        detection_context=utils.get_detection_contexts(locations=codeql_result['locations'])
+        detection_context=[utils.get_detection_context(finding)]
     )
 
 

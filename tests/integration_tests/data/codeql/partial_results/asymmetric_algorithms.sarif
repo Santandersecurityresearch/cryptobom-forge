@@ -1,0 +1,113 @@
+{
+    "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+    "version": "2.1.0",
+    "runs": [
+        {
+            "tool": {
+                "driver": {
+                    "name": "CodeQL",
+                    "organization": "GitHub",
+                    "semanticVersion": "2.15.4"
+                }
+            },
+            "artifacts": [
+                {
+                    "location": {
+                        "uri": "springfield-nuclear-power-plant/core-reactor.py",
+                        "uriBaseId": "%SRCROOT%",
+                        "index": 0
+                    }
+                },
+                {
+                    "location": {
+                        "uri": "springfield-nuclear-power-plant/tests/core-reactor.py",
+                        "uriBaseId": "%SRCROOT%",
+                        "index": 1
+                    }
+                }
+            ],
+            "results": [
+                {
+                    "ruleId": "py/quantum-readiness/cbom/all-cryptographic-algorithms",
+                    "ruleIndex": 0,
+                    "rule": {
+                        "id": "py/quantum-readiness/cbom/all-cryptographic-algorithms",
+                        "index": 0
+                    },
+                    "message": {
+                        "text": "Use of algorithm DSA"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "springfield-nuclear-power-plant/core-reactor.py",
+                                    "uriBaseId": "%SRCROOT%",
+                                    "index": 0
+                                },
+                                "region": {
+                                    "startLine": 30,
+                                    "endLine": 62,
+                                    "endColumn": 22
+                                },
+                                "contextRegion": {
+                                    "startLine": 28,
+                                    "endLine": 64,
+                                    "snippet": {
+                                        "text": "# additional context region\n# additional context region\ndef encrypt(message):\n    private_key = dsa.generate_private_key(\n        key_size=2048\n    )\n\n    subject = issuer = x509.Name([\n        x509.NameAttribute(NameOID.COUNTRY_NAME, 'US'),\n        x509.NameAttribute(NameOID.LOCALITY_NAME, 'Springfield'),\n        x509.NameAttribute(NameOID.ORGANIZATION_NAME, 'Springfield Nuclear Power Plant'),\n        x509.NameAttribute(NameOID.COMMON_NAME, \"springfield-nuclear.com\")\n    ])\n\n    certificate = (\n        x509.CertificateBuilder()\n        .subject_name(subject)\n        .issuer_name(issuer)\n        .public_key(private_key.public_key())\n        .serial_number(x509.random_serial_number())\n        .not_valid_before(datetime.datetime.now(datetime.timezone.utc))\n        .not_valid_after(datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=10))\n        .add_extension(x509.SubjectAlternativeName([x509.DNSName('localhost')]), critical=False)\n    ).sign(private_key, hashes.SHA256())\n\n    public_key = certificate.public_key()\n    ciphertext = public_key.encrypt(\n        message.encode(),\n        padding.OAEP(\n            mgf=padding.MGF1(algorithm=hashes.SHA256()),\n            algorithm=hashes.SHA256(),\n            label=None\n        )\n    )\n    return ciphertext\n# additional context region\n# additional context region"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "primaryLocationLineHash": "61744bbabae05152:1",
+                        "primaryLocationStartColumnFingerprint": "0"
+                    }
+                },
+                {
+                    "ruleId": "py/quantum-readiness/cbom/all-cryptographic-algorithms",
+                    "ruleIndex": 0,
+                    "rule": {
+                        "id": "py/quantum-readiness/cbom/all-cryptographic-algorithms",
+                        "index": 0
+                    },
+                    "message": {
+                        "text": "Use of algorithm RSA"
+                    },
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": "springfield-nuclear-power-plant/core-reactor.py",
+                                    "uriBaseId": "%SRCROOT%",
+                                    "index": 0
+                                },
+                                "region": {
+                                    "startLine": 30,
+                                    "endLine": 63,
+                                    "endColumn": 22
+                                },
+                                "contextRegion": {
+                                    "startLine": 28,
+                                    "endLine": 65,
+                                    "snippet": {
+                                        "text": "# additional context region\n# additional context region\ndef encrypt(message):\n    private_key = rsa.generate_private_key(\n        public_exponent=65537,\n        key_size=2048\n    )\n\n    subject = issuer = x509.Name([\n        x509.NameAttribute(NameOID.COUNTRY_NAME, 'US'),\n        x509.NameAttribute(NameOID.LOCALITY_NAME, 'Springfield'),\n        x509.NameAttribute(NameOID.ORGANIZATION_NAME, 'Springfield Nuclear Power Plant'),\n        x509.NameAttribute(NameOID.COMMON_NAME, \"springfield-nuclear.com\")\n    ])\n\n    certificate = (\n        x509.CertificateBuilder()\n        .subject_name(subject)\n        .issuer_name(issuer)\n        .public_key(private_key.public_key())\n        .serial_number(x509.random_serial_number())\n        .not_valid_before(datetime.datetime.now(datetime.timezone.utc))\n        .not_valid_after(datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=10))\n        .add_extension(x509.SubjectAlternativeName([x509.DNSName('localhost')]), critical=False)\n    ).sign(private_key, hashes.SHA256())\n\n    public_key = certificate.public_key()\n    ciphertext = public_key.encrypt(\n        message.encode(),\n        padding.OAEP(\n            mgf=padding.MGF1(algorithm=hashes.SHA256()),\n            algorithm=hashes.SHA256(),\n            label=None\n        )\n    )\n    return ciphertext\n# additional context region\n# additional context region"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "partialFingerprints": {
+                        "primaryLocationLineHash": "61744bbabae05152:1",
+                        "primaryLocationStartColumnFingerprint": "0"
+                    }
+                }
+            ],
+            "columnKind": "unicodeCodePoints",
+            "properties": {
+                "semmle.formatSpecifier": "sarifv2.1.0"
+            }
+        }
+    ]
+}

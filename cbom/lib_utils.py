@@ -29,7 +29,3 @@ def get_padding_schemes():
 
 def get_primitive_mapping(algorithm):
     return CaseInsensitiveDict(YAML_LIBRARY['crypto']['primitive-mappings']).get(algorithm, 'unknown')
-
-
-def get_query_mapping(rule_id):
-    return CaseInsensitiveDict(YAML_LIBRARY['codeql']['query-mappings']).get(rule_id)

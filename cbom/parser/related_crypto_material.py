@@ -7,8 +7,8 @@ from cyclonedx.model.crypto import CryptoProperties, AssetType, RelatedCryptoMat
 from cbom.parser import utils
 
 
-def parse_initialization_vector(cbom, codeql_result):
-    crypto_properties = _generate_crypto_component(codeql_result, RelatedCryptoMaterialType.INITIALIZATION_VECTOR)
+def parse_initialization_vector(cbom, finding):
+    crypto_properties = _generate_crypto_component(finding, RelatedCryptoMaterialType.INITIALIZATION_VECTOR)
     unique_identifier = uuid.uuid4()
 
     component = Component(
@@ -21,12 +21,12 @@ def parse_initialization_vector(cbom, codeql_result):
     return component
 
 
-def parse_private_key(cbom, codeql_result):
-    key_size = utils.get_key_size(codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text'])
+def parse_private_key(cbom, finding):
+    key_size = utils.get_key_size(finding['contextRegion']['snippet']['text'])
     if key_size:
         key_size = int(key_size)
 
-    crypto_properties = _generate_crypto_component(codeql_result, RelatedCryptoMaterialType.PRIVATE_KEY, size=key_size)
+    crypto_properties = _generate_crypto_component(finding, RelatedCryptoMaterialType.PRIVATE_KEY, size=key_size)
     unique_identifier = uuid.uuid4()
 
     component = Component(
@@ -49,7 +49,7 @@ def _generate_crypto_component(component, material_type, *, size=None):
             related_crypto_material_type=material_type,
             size=size
         ),
-        detection_context=utils.get_detection_contexts(locations=component['locations'])
+        detection_context=[utils.get_detection_context(component)]
     )
 
 

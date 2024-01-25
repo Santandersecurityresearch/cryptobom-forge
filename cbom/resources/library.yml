@@ -1,66 +1,70 @@
 crypto:
   algorithms:
-    - AES
-    - ARC4
-    - BLAKE2B
-    - BLAKE2S
-    - BRAINPOOLP256R1
-    - BRAINPOOLP384R1
-    - BRAINPOOLP512R1
-    - CAMELLIA
-    - CAST5
-    - CHACHA20
-    - CHACHA20POLY1305
-    - CONCATKDFHASH
-    - CONCATKDFHMAC
-    - DIFFIEHELLMAN
-    - DSA
-    - ECDSA
-    - EDDSA
-    - FERNET
-    - HKDF
-    - HKDFEXPAND
-    - IDEA
-    - KBKDFCMAC
-    - KBKDFHMAC
-    - MD5
-    - PBKDF2HMAC
-    - PSS
-    - RSA
-    - SCRYPT
-    - SECP192R1
-    - SECP224R1
-    - SECP256K1
-    - SECP256R1
-    - SECP384R1
-    - SECP521R1
-    - SECT163K1
-    - SECT163R2
-    - SECT233K1
-    - SECT233R1
-    - SECT283K1
-    - SECT283R1
-    - SECT409K1
-    - SECT409R1
-    - SECT571K1
-    - SECT571R1
-    - SEED
-    - SHA1
-    - SHA224
-    - SHA256
-    - SHA3224
-    - SHA3256
-    - SHA3384
-    - SHA3512
-    - SHA384
-    - SHA512
-    - SHA512224
-    - SHA512256
-    - SHAKE
-    - SM3
-    - SM4
-    - TRIPLEDES
-    - X963KDF
+    3DES: TRIPLEDES
+    AES:
+    ARC4:
+    BLAKE2B:
+    BLAKE2S:
+    BRAINPOOLP256R1:
+    BRAINPOOLP384R1:
+    BRAINPOOLP512R1:
+    CAMELLIA:
+    CAST5:
+    CHACHA20:
+    CHACHA20POLY1305:
+    CONCATKDFHASH:
+    CONCATKDFHMAC:
+    DES3: TRIPLEDES
+    DESEDE: TRIPLEDES
+    DIFFIEHELLMAN:
+    DH: DIFFIEHELLMAN
+    DSA:
+    ECDSA:
+    EDDSA:
+    FERNET:
+    HKDF:
+    HKDFEXPAND:
+    IDEA:
+    KBKDFCMAC:
+    KBKDFHMAC:
+    MD5:
+    PBKDF2HMAC:
+    PSS:
+    RSA:
+    SCRYPT:
+    SECP192R1:
+    SECP224R1:
+    SECP256K1:
+    SECP256R1:
+    SECP384R1:
+    SECP521R1:
+    SECT163K1:
+    SECT163R2:
+    SECT233K1:
+    SECT233R1:
+    SECT283K1:
+    SECT283R1:
+    SECT409K1:
+    SECT409R1:
+    SECT571K1:
+    SECT571R1:
+    SEED:
+    SHA1:
+    SHA224:
+    SHA256:
+    SHA3224:
+    SHA3256:
+    SHA3384:
+    SHA3512:
+    SHA384:
+    SHA512:
+    SHA512224:
+    SHA512256:
+    SHAKE:
+    SM3:
+    SM4:
+    TRIPLEDES:
+    X963KDF:
 
   block-modes:
     - CBC

@@ -22,8 +22,8 @@ _X509_ATTRIBUTES_REGEX = re.compile(f"({'|'.join(_X509_ATTRIBUTE_NAMES.keys())})
 _SIGNING_ALGORITHM_REGEX = re.compile(f"sign[A-Z\\d_$]*\\(.*({'|'.join(lib_utils.get_algorithms())}).*\\)", flags=re.IGNORECASE)
 
 
-def parse_x509_certificate_details(cbom, codeql_result):
-    crypto_properties = _generate_crypto_component(codeql_result)
+def parse_x509_certificate_details(cbom, finding):
+    crypto_properties = _generate_crypto_component(finding)
     unique_identifier = uuid.uuid4()
 
     component = Component(
@@ -39,8 +39,8 @@ def parse_x509_certificate_details(cbom, codeql_result):
     return component
 
 
-def _generate_crypto_component(codeql_result):
-    code_snippet = codeql_result['locations'][0]['physicalLocation']['contextRegion']['snippet']['text']
+def _generate_crypto_component(finding):
+    code_snippet = finding['contextRegion']['snippet']['text']
     subject = issuer = _generate_distinguished_name(code_snippet)
 
     return CryptoProperties(
@@ -52,7 +52,7 @@ def _generate_crypto_component(codeql_result):
             certificate_signature_algorithm=_extract_signature_algorithm(code_snippet),  # todo: dependency relation for signing algorithm
             certificate_format='X.509'
         ),
-        detection_context=utils.get_detection_contexts(locations=codeql_result['locations'])
+        detection_context=[utils.get_detection_context(finding)]
     )
 
 
