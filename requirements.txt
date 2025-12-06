@@ -28,4 +28,4 @@ requests==2.32.0
 rpds-py==0.13.1
 sortedcontainers==2.4.0
 tox==4.11.4
-urllib3==2.2.2
+urllib3==2.6.0
