@@ -8,7 +8,7 @@ This repository houses all the tools and utilities one would need in order to pa
 
 - [Quickstart](#quickstart)
   - [Excluding File Paths](#excluding-file-paths)
-- [Cryptography Checker](#cryptography-checker)
+- [Cryptography Checker](#cryptography-checker---enhanced-cryptography-compliance-analysis)
   - [Analysis Output](#analysis-output)
   - [YAML Rule Structure](#yaml-rule-structure)
     - [Example Rules](#example-rules)
