@@ -21,7 +21,7 @@ py-serializable==0.11.1
 pycparser==2.21
 pyproject_hooks==1.0.0
 pystache==0.6.5
-pytest==7.4.3
+pytest==9.0.3
 pyyaml==6.0.1
 referencing==0.31.0
 requests==2.32.4
