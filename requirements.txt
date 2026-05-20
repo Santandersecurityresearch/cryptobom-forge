@@ -8,7 +8,7 @@ click~=8.1.7
 cyclonedx-python-lib @ git+https://git@github.com/pre-quantum-research/cyclonedx-python-lib.git@cbom#egg=cyclonedx-python-lib
 defusedxml==0.7.1
 gitchangelog==3.0.4
-idna==3.7
+idna==3.15
 iniconfig==2.0.0
 jsonschema==4.20.0
 jsonschema-specifications==2023.11.1
